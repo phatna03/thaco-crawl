@@ -29,6 +29,8 @@
 
    `composer.lock` được pin cho **PHP 8.2** (Railway mặc định ~8.2.31). **Không** dùng `railpack.json` với `packages.php` (lỗi `mise` / `bison`).
 
+   **Lỗi build `Please provide a valid cache path`:** `config/view.php` dùng `storage_path('framework/views')` (không `realpath()`), vì Railpack chạy `config:cache` trước khi thư mục tồn tại trong layer build.
+
 ### 3. Database (Supabase Postgres)
 
 1. Supabase → **Project Settings** → **Database** → lấy host, port `5432`, database `postgres`, user, password.

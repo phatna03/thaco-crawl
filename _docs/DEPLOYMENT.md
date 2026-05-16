@@ -19,7 +19,8 @@
 ### 2. Tạo project trên Railway
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo** → chọn repo.
-2. Railway dùng **Nixpacks** build PHP + `composer install` tự động.
+2. Railway dùng **Railpack** build PHP (FrankenPHP) + `composer install` tự động.
+3. **PHP extensions (Filament / export):** trên Railway thêm biến `RAILPACK_PHP_EXTENSIONS=intl,zip` (hoặc giữ `ext-intl` / `ext-zip` trong `composer.json` — Railpack cài extension theo `composer.json`). Nếu build vẫn báo thiếu `intl`/`zip`, dùng chắc chắn biến môi trường nêu trên.
 
 ### 3. Database (Supabase Postgres)
 
@@ -58,6 +59,7 @@ Tùy chọn:
 | `FILAMENT_ADMIN_EMAIL` / `FILAMENT_ADMIN_PASSWORD` / `FILAMENT_ADMIN_NAME` | Cho `php artisan db:seed`. |
 | `FILAMENT_ADMIN_SEED_ON_MIGRATE` | `true` chỉ khi muốn migration tạo user — **nên tắt** sau lần đầu. Khuyến nghị: `db:seed`. |
 | `DAILY_POST_IMPORT_LIMIT` | Ví dụ `100` — giới hạn số bài tạo mới từ **Import** mỗi ngày. Để trống = không giới hạn. |
+| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` — bắt buộc nếu build báo thiếu `ext-intl` / `ext-zip` (Filament + OpenSpout). |
 
 ### 5. Lệnh deploy
 

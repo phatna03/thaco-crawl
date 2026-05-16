@@ -27,7 +27,7 @@
 
 ## Yêu cầu môi trường
 
-- PHP 8.2+ local; **PHP 8.4** trên Railway (`RAILPACK_PHP_VERSION=8.4`, `RAILPACK_PHP_EXTENSIONS=intl,zip`)
+- PHP 8.2+ local; **PHP 8.4** trên Railway (file `railpack.json` trong repo)
 - Database tương thích Laravel (MySQL, PostgreSQL, …)
 - Supabase
 - Railway

@@ -14,20 +14,17 @@
 ### 1. Chuẩn bị repo
 
 - PHP **^8.2** trong `composer.json`; **production Railway dùng PHP 8.4** (`config.platform.php` = `8.4.3` trong lock).
-- Branch đã push lên GitHub (`composer.json`, `composer.lock`, `railway.toml`).
+- Branch đã push lên GitHub (`composer.json`, `composer.lock`, `railpack.json`, `railway.toml`).
 
 ### 2. Tạo project trên Railway
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo** → chọn repo.
 2. Railway dùng **Railpack** build PHP (FrankenPHP) + `composer install` tự động.
-3. **Railpack — biến build bắt buộc (Railway → Variables):**
+3. **Railpack / PHP 8.4**
 
-   | Biến | Giá trị |
-   |------|---------|
-   | `RAILPACK_PHP_VERSION` | `8.4` |
-   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` |
-
-   Lock file được resolve với PHP 8.4 (`openspout` 4.32+, `symfony/css-selector` 8.x). **Không** deploy PHP 8.2 nếu dùng lock hiện tại.
+   - File **`railpack.json`** trong repo ép `packages.php` = `8.4` (build + runtime). **Bắt buộc commit file này** — nếu không, Railway mặc định ~8.2 và `php artisan config:cache` sẽ báo lock cần `>= 8.4`.
+   - Tùy chọn trên Railway Variables (nếu build báo thiếu extension): `RAILPACK_PHP_EXTENSIONS=intl,zip`
+   - `RAILPACK_PHP_VERSION=8.4` trên dashboard **không bắt buộc** khi đã có `railpack.json`.
 
 ### 3. Database (Supabase Postgres)
 
@@ -66,8 +63,7 @@ Tùy chọn:
 | `FILAMENT_ADMIN_EMAIL` / `FILAMENT_ADMIN_PASSWORD` / `FILAMENT_ADMIN_NAME` | Cho `php artisan db:seed`. |
 | `FILAMENT_ADMIN_SEED_ON_MIGRATE` | `true` chỉ khi muốn migration tạo user — **nên tắt** sau lần đầu. Khuyến nghị: `db:seed`. |
 | `DAILY_POST_IMPORT_LIMIT` | Ví dụ `100` — giới hạn số bài tạo mới từ **Import** mỗi ngày. Để trống = không giới hạn. |
-| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` (Filament / OpenSpout). |
-| `RAILPACK_PHP_VERSION` | `8.4` (khớp `composer.lock`). |
+| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` — chỉ nếu build báo thiếu extension (đã có trong `composer.json`). |
 
 ### 5. Lệnh deploy
 

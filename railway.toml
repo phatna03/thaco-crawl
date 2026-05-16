@@ -1,7 +1,6 @@
 # Railway config-as-code — https://docs.railway.com/config-as-code/reference
-# Biến build Railpack (bắt buộc set trên Railway → Variables):
-#   RAILPACK_PHP_VERSION=8.4
-#   RAILPACK_PHP_EXTENSIONS=intl,zip
+# PHP 8.4: railpack.json (packages.php) — không phụ thuộc dashboard.
+# Nếu thiếu ext-intl/zip khi build: Railway Variables → RAILPACK_PHP_EXTENSIONS=intl,zip
 
 [build]
 builder = "RAILPACK"

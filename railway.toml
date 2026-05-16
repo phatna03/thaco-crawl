@@ -1,7 +1,10 @@
 # Railway config-as-code — https://docs.railway.com/config-as-code/reference
 #
-# Railway → Variables (khuyến nghị):
-#   RAILPACK_PHP_EXTENSIONS=intl,zip
+# Railway → Variables (runtime + build):
+#   DB_CONNECTION=pgsql
+#   DB_HOST=... DB_PORT=5432 DB_DATABASE=postgres DB_USERNAME=... DB_PASSWORD=... DB_SSLMODE=require
+#   RAILPACK_PHP_EXTENSIONS=intl,zip,pdo_pgsql
+#   RAILPACK_SKIP_MIGRATIONS=true
 # Không dùng railpack.json packages.php (lỗi mise/bison).
 # Lock file khớp PHP 8.2 — không cần RAILPACK_PHP_VERSION=8.4 trừ khi nâng lock sau này.
 

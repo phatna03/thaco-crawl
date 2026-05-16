@@ -24,7 +24,8 @@
 
    | Biến | Giá trị | Ghi chú |
    |------|---------|---------|
-   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` | **Nên có** — Filament + OpenSpout |
+   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip,pdo_pgsql` | Filament + OpenSpout + **Supabase/Postgres** |
+   | `RAILPACK_SKIP_MIGRATIONS` | `true` | DB đã có bảng sẵn — tắt migrate/seed tự động lúc container start |
    | `RAILPACK_PHP_VERSION` | `8.4` | **Tùy chọn** — chỉ khi sau này nâng lock lên gói cần PHP 8.4+ |
 
    `composer.lock` được pin cho **PHP 8.2** (Railway mặc định ~8.2.31). **Không** dùng `railpack.json` với `packages.php` (lỗi `mise` / `bison`).
@@ -56,7 +57,11 @@ DB_SSLMODE=require
 | `APP_ENV` | `production` |
 | `APP_DEBUG` | `false` |
 | `APP_URL` | URL public Railway (vd `https://xxx.up.railway.app`). |
-| `DB_*` hoặc `DATABASE_URL` | Supabase |
+| `DB_CONNECTION` | **`pgsql`** (nếu thiếu → Laravel dùng `mysql` + DB `forge` → crash) |
+| `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | Supabase |
+| `DB_SSLMODE` | `require` (Supabase) |
+| `RAILPACK_SKIP_MIGRATIONS` | `true` nếu schema đã có; `false`/bỏ nếu muốn Railpack tự migrate lần đầu |
+| `RAILPACK_PHP_EXTENSIONS` | `intl,zip,pdo_pgsql` |
 | `OPENAI_API_KEY` | (hoặc Gemini nếu dùng) |
 | `AI_DRIVER` | `openai` hoặc `gemini` |
 
@@ -68,7 +73,6 @@ Tùy chọn:
 | `FILAMENT_ADMIN_EMAIL` / `FILAMENT_ADMIN_PASSWORD` / `FILAMENT_ADMIN_NAME` | Cho `php artisan db:seed`. |
 | `FILAMENT_ADMIN_SEED_ON_MIGRATE` | `true` chỉ khi muốn migration tạo user — **nên tắt** sau lần đầu. Khuyến nghị: `db:seed`. |
 | `DAILY_POST_IMPORT_LIMIT` | Ví dụ `100` — giới hạn số bài tạo mới từ **Import** mỗi ngày. Để trống = không giới hạn. |
-| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` (build). |
 
 ### 5. Lệnh deploy
 
@@ -112,6 +116,34 @@ php artisan serve --host=0.0.0.0 --port=$PORT
 - **Supabase không RLS:** với stack **chỉ Laravel + Postgres connection**, client không cần anon key; ai có `DB_PASSWORD` mới vào được DB — **đừng lộ `.env` / Railway variables**.
 - Nếu sau này gọi Supabase REST/Realtime từ trình duyệt: **bật RLS** + policy; không dùng `service_role` ở frontend.
 - Production: `APP_DEBUG=false`, Filament mật khẩu mạnh, cập nhật framework.
+
+---
+
+## Crash: `could not find driver` + `Connection: mysql` + `forge`
+
+Railpack **tự chạy migrate** khi container start (trừ khi `RAILPACK_SKIP_MIGRATIONS=true`).
+
+Log kiểu trên nghĩa là:
+
+1. **`DB_CONNECTION` chưa set** (hoặc vẫn `mysql`) → Laravel dùng MySQL, database mặc định `forge`.
+2. Image PHP **không có** `pdo_mysql` / chưa có **`pdo_pgsql`** cho Supabase.
+
+**Sửa trên Railway Variables:**
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=db.xxxx.supabase.co
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=...
+DB_SSLMODE=require
+
+RAILPACK_PHP_EXTENSIONS=intl,zip,pdo_pgsql
+RAILPACK_SKIP_MIGRATIONS=true
+```
+
+Redeploy. Nếu DB **chưa** có bảng: đặt `RAILPACK_SKIP_MIGRATIONS=false` (hoặc xóa biến), đảm bảo `pdo_pgsql` + `DB_*` đúng, deploy một lần để migrate chạy thành công, sau đó bật lại `RAILPACK_SKIP_MIGRATIONS=true`.
 
 ---
 

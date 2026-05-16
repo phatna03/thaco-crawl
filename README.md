@@ -6,7 +6,7 @@
 
 | Thành phần | Cách dùng thực tế |
 |------------|-------------------|
-| **PHP 8.1+**, **Laravel 10** | Toàn bộ backend, Eloquent, validation, config |
+| **PHP 8.2+**, **Laravel 10** | Toàn bộ backend, Eloquent, validation, config |
 | **Filament 3.2** | Admin (`/admin`): đăng nhập session, resource Bài viết, trang Import nội dung, đổi mật khẩu qua menu user |
 | **Laravel Sanctum** | Model `User` dùng `HasApiTokens`; route `GET /api/user` (token).  |
 | **Illuminate HTTP Client** (Guzzle) | Gọi API AI trong `AIService` |
@@ -27,7 +27,7 @@
 
 ## Yêu cầu môi trường
 
-- PHP 8.1, Composer
+- PHP 8.2+, Composer (Railway Railpack chỉ hỗ trợ PHP từ 8.2)
 - Database tương thích Laravel (MySQL, PostgreSQL, …)
 - Supabase
 - Railway

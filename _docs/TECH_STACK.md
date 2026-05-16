@@ -6,7 +6,7 @@
 Windows 11
 
 ## PHP
-PHP 8.1
+PHP 8.2+
 
 ## Laravel
 Laravel 10
@@ -26,7 +26,7 @@ Nginx
 
 ## Backend
 - Laravel 10
-- PHP 8.1
+- PHP 8.2+
 
 ## Admin CMS
 - FilamentPHP

@@ -13,7 +13,7 @@
 
 ### 1. Chuẩn bị repo
 
-- PHP **^8.1** (đúng `composer.json`).
+- PHP **^8.2** (đúng `composer.json`; Railway Railpack không còn cung cấp PHP 8.1).
 - Branch đã push lên GitHub.
 
 ### 2. Tạo project trên Railway

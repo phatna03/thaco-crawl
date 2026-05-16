@@ -5,7 +5,7 @@ alwaysApply: true
 Laravel rules:
 
 - Laravel 10 conventions
-- PHP 8.2 compatible
+- PHP 8.2+ compatible (production Railway: 8.4)
 - Use dependency injection
 - Use Form Requests
 - Use Eloquent relationships

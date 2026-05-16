@@ -13,21 +13,21 @@
 
 ### 1. Chuẩn bị repo
 
-- PHP **^8.2** trong `composer.json`; **production Railway dùng PHP 8.4** (`config.platform.php` = `8.4.3` trong lock).
+- PHP **^8.2** trong `composer.json`; lock pin `config.platform.php` = **8.2.31** (khớp Railway PHP 8.2).
 - Branch đã push lên GitHub (`composer.json`, `composer.lock`, `railway.toml`).
 
 ### 2. Tạo project trên Railway
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo** → chọn repo.
 2. Railway dùng **Railpack** build PHP (FrankenPHP) + `composer install` tự động.
-3. **Railpack — biến build (Railway → Variables, bắt buộc)**
+3. **Railpack — biến build (Railway → Variables)**
 
    | Biến | Giá trị | Ghi chú |
    |------|---------|---------|
-   | `RAILPACK_PHP_VERSION` | `8.4` | Dùng image PHP/FrankenPHP có sẵn. **Không** tạo `railpack.json` với `packages.php` — Railpack sẽ biên dịch PHP từ source và fail (`mise install` / thiếu `bison`). |
-   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` | Filament + OpenSpout |
+   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` | **Nên có** — Filament + OpenSpout |
+   | `RAILPACK_PHP_VERSION` | `8.4` | **Tùy chọn** — chỉ khi sau này nâng lock lên gói cần PHP 8.4+ |
 
-   Lock file cần PHP ≥ 8.4; nếu không set `RAILPACK_PHP_VERSION=8.4`, build/runtime có thể dùng 8.2 và lỗi `platform_check`.
+   `composer.lock` được pin cho **PHP 8.2** (Railway mặc định ~8.2.31). **Không** dùng `railpack.json` với `packages.php` (lỗi `mise` / `bison`).
 
 ### 3. Database (Supabase Postgres)
 
@@ -66,7 +66,6 @@ Tùy chọn:
 | `FILAMENT_ADMIN_EMAIL` / `FILAMENT_ADMIN_PASSWORD` / `FILAMENT_ADMIN_NAME` | Cho `php artisan db:seed`. |
 | `FILAMENT_ADMIN_SEED_ON_MIGRATE` | `true` chỉ khi muốn migration tạo user — **nên tắt** sau lần đầu. Khuyến nghị: `db:seed`. |
 | `DAILY_POST_IMPORT_LIMIT` | Ví dụ `100` — giới hạn số bài tạo mới từ **Import** mỗi ngày. Để trống = không giới hạn. |
-| `RAILPACK_PHP_VERSION` | `8.4` (build — xem mục 3 ở trên). |
 | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` (build). |
 
 ### 5. Lệnh deploy

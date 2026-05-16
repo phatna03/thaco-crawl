@@ -104,9 +104,13 @@ php artisan serve --host=0.0.0.0 --port=$PORT
 
 (`$PORT` do Railway inject.)
 
-### 6. Storage
+### 6. Storage / session 500
 
-- `php artisan storage:link` khi dùng file public qua `storage`.
+Lỗi `storage/framework/sessions/... No such file or directory`:
+
+- `.gitignore` phải ignore `sessions/*` nhưng **không** ignore cả thư mục (repo đã sửa theo chuẩn Laravel).
+- `start-container.sh` ở root: `mkdir` + `chmod` trước khi FrankenPHP chạy.
+- Push + **Redeploy**; kiểm tra Shell: `ls storage/framework/sessions`
 
 ---
 

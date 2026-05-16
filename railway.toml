@@ -1,6 +1,8 @@
 # Railway config-as-code — https://docs.railway.com/config-as-code/reference
-# PHP 8.4: railpack.json (packages.php) — không phụ thuộc dashboard.
-# Nếu thiếu ext-intl/zip khi build: Railway Variables → RAILPACK_PHP_EXTENSIONS=intl,zip
+#
+# BẮT BUỘC trên Railway → service → Variables (không dùng railpack.json packages.php — gây lỗi mise/bison):
+#   RAILPACK_PHP_VERSION=8.4
+#   RAILPACK_PHP_EXTENSIONS=intl,zip
 
 [build]
 builder = "RAILPACK"

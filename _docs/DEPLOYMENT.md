@@ -14,17 +14,20 @@
 ### 1. Chuẩn bị repo
 
 - PHP **^8.2** trong `composer.json`; **production Railway dùng PHP 8.4** (`config.platform.php` = `8.4.3` trong lock).
-- Branch đã push lên GitHub (`composer.json`, `composer.lock`, `railpack.json`, `railway.toml`).
+- Branch đã push lên GitHub (`composer.json`, `composer.lock`, `railway.toml`).
 
 ### 2. Tạo project trên Railway
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo** → chọn repo.
 2. Railway dùng **Railpack** build PHP (FrankenPHP) + `composer install` tự động.
-3. **Railpack / PHP 8.4**
+3. **Railpack — biến build (Railway → Variables, bắt buộc)**
 
-   - File **`railpack.json`** trong repo ép `packages.php` = `8.4` (build + runtime). **Bắt buộc commit file này** — nếu không, Railway mặc định ~8.2 và `php artisan config:cache` sẽ báo lock cần `>= 8.4`.
-   - Tùy chọn trên Railway Variables (nếu build báo thiếu extension): `RAILPACK_PHP_EXTENSIONS=intl,zip`
-   - `RAILPACK_PHP_VERSION=8.4` trên dashboard **không bắt buộc** khi đã có `railpack.json`.
+   | Biến | Giá trị | Ghi chú |
+   |------|---------|---------|
+   | `RAILPACK_PHP_VERSION` | `8.4` | Dùng image PHP/FrankenPHP có sẵn. **Không** tạo `railpack.json` với `packages.php` — Railpack sẽ biên dịch PHP từ source và fail (`mise install` / thiếu `bison`). |
+   | `RAILPACK_PHP_EXTENSIONS` | `intl,zip` | Filament + OpenSpout |
+
+   Lock file cần PHP ≥ 8.4; nếu không set `RAILPACK_PHP_VERSION=8.4`, build/runtime có thể dùng 8.2 và lỗi `platform_check`.
 
 ### 3. Database (Supabase Postgres)
 
@@ -63,7 +66,8 @@ Tùy chọn:
 | `FILAMENT_ADMIN_EMAIL` / `FILAMENT_ADMIN_PASSWORD` / `FILAMENT_ADMIN_NAME` | Cho `php artisan db:seed`. |
 | `FILAMENT_ADMIN_SEED_ON_MIGRATE` | `true` chỉ khi muốn migration tạo user — **nên tắt** sau lần đầu. Khuyến nghị: `db:seed`. |
 | `DAILY_POST_IMPORT_LIMIT` | Ví dụ `100` — giới hạn số bài tạo mới từ **Import** mỗi ngày. Để trống = không giới hạn. |
-| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` — chỉ nếu build báo thiếu extension (đã có trong `composer.json`). |
+| `RAILPACK_PHP_VERSION` | `8.4` (build — xem mục 3 ở trên). |
+| `RAILPACK_PHP_EXTENSIONS` | `intl,zip` (build). |
 
 ### 5. Lệnh deploy
 

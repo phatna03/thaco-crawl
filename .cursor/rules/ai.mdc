@@ -1,0 +1,11 @@
+---
+alwaysApply: true
+---
+
+AI rules:
+
+- AI logic only inside AIService
+- Support retry analysis
+- Handle API failures
+- Preserve original content
+- Use concise prompts

@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+Laravel rules:
+
+- Laravel 10 conventions
+- PHP 8.1 compatible
+- Use dependency injection
+- Use Form Requests
+- Use Eloquent relationships
+- Use validation
+- Use service container

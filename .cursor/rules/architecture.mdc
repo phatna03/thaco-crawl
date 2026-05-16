@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+
+You are working on a Laravel 10 AI Content Crawler CMS project.
+
+Architecture rules:
+- Thin controllers
+- Business logic inside Services
+- Use FilamentPHP
+- Use reusable services
+- Clean architecture
+- Mobile responsive UI
+
+Avoid:
+- overengineering
+- repository pattern unless necessary
+- complex abstractions
